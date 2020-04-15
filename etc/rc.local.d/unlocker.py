@@ -322,7 +322,7 @@ def main():
     srclib64 = '/lib64/libvmkctl.so'
 
     # Destination files cuurently tmp but may use scratch
-    basefolder = '/tmp/'
+    basefolder = '/scratch/tmp/'
     destfolder = joinpath(basefolder, 'unlocker')
     destvmx = joinpath(destfolder, 'bin/vmx')
     destlib32 = joinpath(destfolder, 'lib/libvmkctl.so')
@@ -343,8 +343,11 @@ def main():
 
     # Patch 32-bit libvmkctl to return Apple SMC present
     os.makedirs(joinpath(destfolder, 'lib'))
-    shutil.copy2(srclib32, destlib32)
-    patchvmkctl(destlib32)
+    try:
+     shutil.copy2(srclib32, destlib32)
+     patchvmkctl(destlib32)
+    except:
+     pass
 
     # Patch 64-bit libvmkctl to return Apple SMC present
     if os.path.isfile(srclib64):
